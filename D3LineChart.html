@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style type="text/css">
+/* 13. Basic Styling with CSS */
+
+/* Style the lines by removing the fill and applying a stroke */
+.line {
+    fill: none;
+    stroke: #ffab00;
+    stroke-width: 3;
+}
+
+.line1 {
+    fill: none;
+    stroke: #ffabcc;
+    stroke-width: 3;
+}
+
+.line2 {
+    fill: none;
+    stroke: #ffabee;
+    stroke-width: 3;
+}
+
+.line3 {
+    fill: none;
+    stroke: #aaab00;
+    stroke-width: 3;
+}
+
+.line4 {
+    fill: none;
+    stroke: #00ab00;
+    stroke-width: 3;
+}
+
+.line5 {
+    fill: none;
+    stroke: #ff0000;
+    stroke-width: 3;
+}
+  
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+/* Style the dots by assigning a fill and stroke */
+.dot {
+    stroke: none;
+    fill: #ffab00;
+}
+
+.dot1 {
+    stroke: none;
+    fill: #ffabcc;
+}
+
+.dot2 {
+    stroke: none;
+    fill: #ffabee;
+}
+
+.dot3 {
+    stroke: none;
+    fill: #aaab00;
+}
+
+.dot4 {
+    stroke: none;
+    fill: #00ab00;
+}
+
+.dot5 {
+    stroke: none;
+    fill: #ff0000;
+}
+  
+  .focus circle {
+  fill: none;
+  stroke: steelblue;
+}
+
+</style>
+<!-- Body tag is where we will append our SVG and SVG objects-->
+<body>
+</body>
+
+<!-- Load in the d3 library -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+
+// 2. Use the margin convention practice 
+var margin = {top: 50, right: 50, bottom: 50, left: 50}
+  , width = window.innerWidth - margin.left - margin.right // Use the window's width 
+  , height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
+
+  var mydata = [
+  {
+    "year": 2018,
+    "fulltime_men_applied": "45,636",
+    "fulltime_women_applied": "52,265",
+    "fulltime_men_admitted": "13,781",
+    "fulltime_women_admitted": "15,821",
+    "fulltime_men_enrolled": "3,220",
+    "fulltime_women_enrolled": "3,484"
+  },
+  {
+    "year": 2017,
+    "fulltime_men_applied": "41,583",
+    "fulltime_women_applied": "46,845",
+    "fulltime_men_admitted": "13,981",
+    "fulltime_women_admitted": "16,231",
+    "fulltime_men_enrolled": "2,725",
+    "fulltime_women_enrolled": "2,974"
+  },
+  {
+    "year": 2016,
+    "fulltime_men_applied": "39,779",
+    "fulltime_women_applied": "44,430",
+    "fulltime_men_admitted": "14,103",
+    "fulltime_women_admitted": "16,170",
+    "fulltime_men_enrolled": "2,669",
+    "fulltime_women_enrolled": "3,077"
+  },
+  {
+    "year": 2015,
+    "fulltime_men_applied": "37,009",
+    "fulltime_women_applied": "41,047",
+    "fulltime_men_admitted": "12,748",
+    "fulltime_women_admitted": "13,761",
+    "fulltime_men_enrolled": "2,711",
+    "fulltime_women_enrolled": "2,581"
+  },
+  {
+    "year": 2014,
+    "fulltime_men_applied": "34,618",
+    "fulltime_women_applied": "38,822",
+    "fulltime_men_admitted": "11,758",
+    "fulltime_women_admitted": "12,837",
+    "fulltime_men_enrolled": "2,538",
+    "fulltime_women_enrolled": "2,383"
+  },
+  {
+    "year": 2013,
+    "fulltime_men_applied": "31,992",
+    "fulltime_women_applied": "35,408",
+    "fulltime_men_admitted": "11,866",
+    "fulltime_women_admitted": "12,966",
+    "fulltime_men_enrolled": "2,616",
+    "fulltime_women_enrolled": "2,612"
+  },
+  {
+    "year": 2012,
+    "fulltime_men_applied": "28,758",
+    "fulltime_women_applied": "32,049",
+    "fulltime_men_admitted": "10,917",
+    "fulltime_women_admitted": "12,046",
+    "fulltime_men_enrolled": "2,328",
+    "fulltime_women_enrolled": "2,245"
+  },
+  {
+    "year": 2011,
+    "fulltime_men_applied": "25,097",
+    "fulltime_women_applied": "28,351",
+    "fulltime_men_admitted": "8,707",
+    "fulltime_women_admitted": "10,269",
+    "fulltime_men_enrolled": "1,583",
+    "fulltime_women_enrolled": "1,861"
+  },
+  {
+    "year": 2010,
+    "fulltime_men_applied": "22,332",
+    "fulltime_women_applied": "25,761",
+    "fulltime_men_admitted": "8,365",
+    "fulltime_women_admitted": "9,991",
+    "fulltime_men_enrolled": "1,858",
+    "fulltime_women_enrolled": "2,089"
+  },
+  {
+    "year": 2009,
+    "fulltime_men_applied": "21,725",
+    "fulltime_women_applied": "25,321",
+    "fulltime_men_admitted": "7,816",
+    "fulltime_women_admitted": "9,863",
+    "fulltime_men_enrolled": "1,695",
+    "fulltime_women_enrolled": "2,054"
+  },
+  {
+    "year": 2008,
+    "fulltime_men_applied": "21,590",
+    "fulltime_women_applied": "25,775",
+    "fulltime_men_admitted": "8,517",
+    "fulltime_women_admitted": "11,200",
+    "fulltime_men_enrolled": "1,893",
+    "fulltime_women_enrolled": "2,399"
+  },
+  {
+    "year": 2007,
+    "fulltime_men_applied": "20,566",
+    "fulltime_women_applied": "24,507",
+    "fulltime_men_admitted": "8,419",
+    "fulltime_women_admitted": "10,759",
+    "fulltime_men_enrolled": "1,838",
+    "fulltime_women_enrolled": "2,303"
+  },
+  {
+    "year": 2006,
+    "fulltime_men_applied": "19,838",
+    "fulltime_women_applied": "23,748",
+    "fulltime_men_admitted": "9,210",
+    "fulltime_women_admitted": "12,135",
+    "fulltime_men_enrolled": "2,031",
+    "fulltime_women_enrolled": "2,558"
+  },
+  {
+    "year": 2005,
+    "fulltime_men_applied": "18,147",
+    "fulltime_women_applied": "22,371",
+    "fulltime_men_admitted": "7,580",
+    "fulltime_women_admitted": "10,311",
+    "fulltime_men_enrolled": "1,607",
+    "fulltime_women_enrolled": "2,113"
+  }
+]
+
+// The number of datapoints
+var n = mydata.length;
+
+// 5. X scale will use the index of our data
+var xScale = d3.scaleLinear()
+    .domain([0, n-1]) // input
+    .range([0, width]); // output
+
+// 6. Y scale will use the randomly generate number 
+var yScale = d3.scaleLinear()
+    .domain([0, 55000]) // input 
+    .range([height, 0]); // output 
+
+// 7. d3's line generator
+var line = d3.line()
+    .x(function(d, i) { return xScale(i); }) // set the x values for the line generator
+    .y(function(d) { return yScale(d.y); }) // set the y values for the line generator 
+    .curve(d3.curveMonotoneX) // apply smoothing to the line
+
+// 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
+
+// 1. Add the SVG to the page and employ #2
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// 3. Call the x axis in a group tag
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+
+// 4. Call the y axis in a group tag
+svg.append("g")
+    .attr("class", "y axis")
+    .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+
+
+new_json = {};
+for(key in mydata){
+    for(k in mydata[key]){
+        if(k == "year"){
+            continue;
+        }
+        if(!Object.keys(new_json).includes(k)){
+            new_json[k] = []
+        }
+        new_json[k].push(parseInt(mydata[key][k].replace(",", "")))
+    }
+}
+
+var i = -1;
+var dataset = d3.range(n).map(function(d) { 
+    i++;
+    return {"y": new_json["fulltime_women_admitted"][i]};
+    })
+
+//var dataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
+
+//window.alert(dataset[0]);
+
+svg.append("path")
+    .datum(dataset) // 10. Binds data to the line 
+    .attr("class", "line") // Assign a class for styling 
+    .attr("d", line); // 11. Calls the line generator 
+
+// 12. Appends a circle for each datapoint 
+svg.selectAll(".dot")
+    .data(dataset)
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d, i) { return xScale(i) })
+    .attr("cy", function(d) { return yScale(d.y) })
+    .attr("r", 5)
+
+    var j = 0;
+svg.append("g").selectAll("text")
+    .data(dataset)
+    .enter()
+    .append("text")
+    .attr("x", function(d, i) { return xScale(i) })
+    .attr("y", function(d) { return yScale(d.y) })
+    .attr("fill", "black")
+    .text(function(d) {
+        j += 1;
+        if(j == n/2){
+            return "fulltime_women_admitted";
+        }
+        else{
+            return ""
+        }
+    });
+
+var i = -1;
+var dataset1 = d3.range(n).map(function(d) { 
+    i++;
+    return {"y": new_json["fulltime_men_admitted"][i]} ;
+})
+
+svg.append("path")
+    .datum(dataset1) // 10. Binds data to the line 
+    .attr("class", "line1") // Assign a class for styling 
+    .attr("d", line); // 11. Calls the line generator 
+
+// 12. Appends a circle for each datapoint 
+svg.selectAll(".dot1")
+    .data(dataset1)
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot1") // Assign a class for styling
+    .attr("cx", function(d, i) { return xScale(i) })
+    .attr("cy", function(d) { return yScale(d.y) })
+    .attr("r", 5)
+
+    var j = 0;
+svg.append("g").selectAll("text")
+    .data(dataset1)
+    .enter()
+    .append("text")
+    .attr("x", function(d, i) { return xScale(i) })
+    .attr("y", function(d) { return yScale(d.y) })
+    .attr("fill", "red")
+    .text(function(d) {
+        j += 1;
+        if(j == n/2){
+            return "fulltime_men_admitted";
+        }
+        else{
+            return ""
+        }
+    });
+
+    var i = -1;
+var dataset2 = d3.range(n).map(function(d) { 
+    i++;
+    return {"y": new_json["fulltime_women_applied"][i]} ;
+})
+
+svg.append("path")
+    .datum(dataset2) // 10. Binds data to the line 
+    .attr("class", "line2") // Assign a class for styling 
+    .attr("d", line); // 11. Calls the line generator 
+
+// 12. Appends a circle for each datapoint 
+svg.selectAll(".dot2")
+    .data(dataset2)
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot2") // Assign a class for styling
+    .attr("cx", function(d, i) { return xScale(i) })
+    .attr("cy", function(d) { return yScale(d.y) })
+    .attr("r", 5)
+
+    var j = 0;
+svg.append("g").selectAll("text")
+    .data(dataset2)
+    .enter()
+    .append("text")
+    .attr("x", function(d, i) { return xScale(i) })
+    .attr("y", function(d) { return yScale(d.y) })
+    .attr("fill", "black")
+    .text(function(d) {
+        j += 1;
+        if(j == n/2){
+            return "fulltime_women_applied";
+        }
+        else{
+            return ""
+        }
+    });
+
+    var i = -1;
+var dataset3 = d3.range(n).map(function(d) { 
+    i++;
+    return {"y": new_json["fulltime_men_applied"][i]} ;
+})
+
+svg.append("path")
+    .datum(dataset3) // 10. Binds data to the line 
+    .attr("class", "line3") // Assign a class for styling 
+    .attr("d", line); // 11. Calls the line generator 
+
+// 12. Appends a circle for each datapoint 
+svg.selectAll(".dot3")
+    .data(dataset3)
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot3") // Assign a class for styling
+    .attr("cx", function(d, i) { return xScale(i) })
+    .attr("cy", function(d) { return yScale(d.y) })
+    .attr("r", 5)
+
+    var j = 0;
+svg.append("g").selectAll("text")
+    .data(dataset3)
+    .enter()
+    .append("text")
+    .attr("x", function(d, i) { return xScale(i) })
+    .attr("y", function(d) { return yScale(d.y) })
+    .attr("fill", "red")
+    .text(function(d) {
+        j += 1;
+        if(j == n/2){
+            return "fulltime_men_applied";
+        }
+        else{
+            return ""
+        }
+    });
+
+    var i = -1;
+var dataset4 = d3.range(n).map(function(d) { 
+    i++;
+    return {"y": new_json["fulltime_women_enrolled"][i]} ;
+})
+
+svg.append("path")
+    .datum(dataset4) // 10. Binds data to the line 
+    .attr("class", "line4") // Assign a class for styling 
+    .attr("d", line); // 11. Calls the line generator 
+
+// 12. Appends a circle for each datapoint 
+svg.selectAll(".dot4")
+    .data(dataset4)
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot4") // Assign a class for styling
+    .attr("cx", function(d, i) { return xScale(i) })
+    .attr("cy", function(d) { return yScale(d.y) })
+    .attr("r", 5)
+
+    var j = 0;
+svg.append("g").selectAll("text")
+    .data(dataset4)
+    .enter()
+    .append("text")
+    .attr("x", function(d, i) { return xScale(i) })
+    .attr("y", function(d) { return yScale(d.y) })
+    .attr("fill", "black")
+    .text(function(d) {
+        j += 1;
+        if(j == n/2){
+            return "fulltime_women_enrolled";
+        }
+        else{
+            return ""
+        }
+    });
+
+    var i = -1;
+var dataset5 = d3.range(n).map(function(d) { 
+    i++;
+    return {"y": new_json["fulltime_men_enrolled"][i]} ;
+})
+
+svg.append("path")
+    .datum(dataset5) // 10. Binds data to the line 
+    .attr("class", "line5") // Assign a class for styling 
+    .attr("d", line); // 11. Calls the line generator 
+
+// 12. Appends a circle for each datapoint 
+svg.selectAll(".dot5")
+    .data(dataset5)
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot5") // Assign a class for styling
+    .attr("cx", function(d, i) { return xScale(i) })
+    .attr("cy", function(d) { return yScale(d.y) })
+    .attr("r", 5)
+
+var j = 0;
+svg.append("g").selectAll("text")
+    .data(dataset5)
+    .enter()
+    .append("text")
+    .attr("x", function(d, i) { return xScale(i) })
+    .attr("y", function(d) { return yScale(d.y) })
+    .attr("fill", "red")
+    .text(function(d) {
+        j += 1;
+        if(j == n/2){
+            return "fulltime_men_enrolled";
+        }
+        else{
+            return ""
+        }
+    });
+
+</script>
+</body>
+</html>
